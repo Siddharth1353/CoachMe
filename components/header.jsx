@@ -1,10 +1,4 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 
 import Link from "next/link";
@@ -22,12 +16,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { checkUser } from "@/lib/checkUser";
 
-const Header = () => {
+const Header = async () => {
+  await checkUser();
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -43,7 +37,7 @@ const Header = () => {
 
         <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
-            <Link href={"/dashboard"}>
+            <Link href="/dashboard">
               <Button variant={"outline"}>
                 <LayoutDashboard className="h-4 w-4" />
                 <span className="hidden md:block "> Industry Insights</span>
@@ -51,7 +45,7 @@ const Header = () => {
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Button>
                   <StarIcon className="h-4 w-4" />
                   <span className="hidden md:block ">Growth Tools</span>
@@ -59,23 +53,23 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Link href={"/resume"} className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link href="/resume" className="flex items-center gap-2">
                     <FileText className="h-4 w-4" />
                     <span>Resume</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link
-                    href={"ai-cover-letter"}
+                    href="/ai-cover-letter"
                     className="flex items-center gap-2"
                   >
                     <PenBox className="h-4 w-4" />
                     <span>Cover Letter</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={"Interview"} className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link href="/Interview" className="flex items-center gap-2">
                     <GraduationCap className="h-4 w-4" />
                     <span>Interview Preparation</span>
                   </Link>
