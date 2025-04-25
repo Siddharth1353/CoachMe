@@ -3,6 +3,7 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { generateAIInsights } from "./dashboard";
 
 export async function updateUser(data) {
   const { userId } = await auth();
@@ -25,16 +26,11 @@ export async function updateUser(data) {
 
         // If industry doesn't exist, create it with default values
         if (!industryInsight) {
-          industryInsight = await tx.industryInsight.create({
+          const insights = await generateAIInsights(data.industry);
+          industryInsight = await db.industryInsight.create({
             data: {
               industry: data.industry,
-              salaryRanges: [],
-              growthRate: 2.5,
-              demandLevel: "MEDIUM",
-              topSkills: [],
-              marketOutlook: "NEUTRAL",
-              keyTrends: [],
-              recommendedSkills: [],
+              ...insights,
               nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
             },
           });
@@ -60,10 +56,10 @@ export async function updateUser(data) {
       }
     );
     revalidatePath("/");
-    return { sucess: true, ...result };
+    return result.user;
   } catch (error) {
     console.error("Error updating user:", error.message);
-    throw new Error("Failed to update user");
+    throw new Error(`Failed to update user: ${error.message}`);
   }
 }
 
@@ -92,6 +88,6 @@ export async function getUserOnboardingStatus() {
     };
   } catch (error) {
     console.error("Error checking onboarding status:", error);
-    throw new Error("Failed to check onboarding status");
+    throw new Error(`Failed to check onboarding status: ${error.message}`);
   }
 }

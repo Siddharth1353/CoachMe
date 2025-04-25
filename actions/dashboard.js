@@ -22,10 +22,13 @@ export const generateAIInsights = async (industry) => {
     "recommendedSkills": ["skill1", "skill2"]
   }
   
-  IMPORTANT: Return ONLY the JSON. No additional text, notes, or markdown formatting.
-  Include at least 5 common roles for salary ranges.
-  Growth rate should be a percentage.
-  Include at least 5 skills and trends.
+  IMPORTANT: 
+  - Return ONLY the JSON. No additional text, notes, or markdown formatting.
+  - Include at least 5 common roles for salary ranges.
+  - Growth rate should be a percentage.
+  - Include at least 5 skills and trends.
+  - demandLevel MUST be exactly one of: High, Medium, Low (case sensitive)
+  - marketOutlook MUST be exactly one of: Positive, Neutral, Negative (case sensitive)
 `;
 
   const result = await model.generateContent(prompt);
@@ -42,6 +45,9 @@ export async function getIndustryInsights() {
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
+    include: {
+      industryInsight: true,
+    },
   });
 
   if (!user) throw new Error("User not found");
