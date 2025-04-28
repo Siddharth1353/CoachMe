@@ -27,8 +27,7 @@ export const generateAIInsights = async (industry) => {
   - Include at least 5 common roles for salary ranges.
   - Growth rate should be a percentage.
   - Include at least 5 skills and trends.
-  - demandLevel MUST be exactly one of: High, Medium, Low (case sensitive)
-  - marketOutlook MUST be exactly one of: Positive, Neutral, Negative (case sensitive)
+
 `;
 
   const result = await model.generateContent(prompt);
