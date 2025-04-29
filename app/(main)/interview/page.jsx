@@ -1,7 +1,22 @@
-import React from "react";
+import { getAssessments } from "@/actions/interview";
+import StatsCards from "./_componets/stats-cards";
+import PerformanceChart from "./_componets/performance-chart";
+import QuizList from "./_componets/quiz-list";
+export default async function InterviewPrepPage() {
+  const assessments = await getAssessments();
 
-const InterviewPage = () => {
-  return <div>InterviewPage fuck you !!!</div>;
-};
-
-export default InterviewPage;
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-5">
+        <h1 className="text-6xl font-bold gradient-title">
+          Interview Preparation
+        </h1>
+      </div>
+      <div className="space-y-6">
+        <StatsCards assessments={assessments} />
+        <PerformanceChart assessments={assessments} />
+        <QuizList assessments={assessments} />
+      </div>
+    </div>
+  );
+}
