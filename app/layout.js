@@ -22,7 +22,15 @@ export default function RootLayout({ children }) {
     >
       <html lang="en" suppressHydrationWarning>
         <head>
-          <link rel="icon" href="/logo.png" sizes="any" />
+          <link rel="icon" href="/logo3.png" sizes="any" />
+          <style>
+            {`
+              link[rel="icon"] {
+                width: 64px;
+                height: 64px;
+              }
+            `}
+          </style>
         </head>
         <body className={`${inter.className}`}>
           <ThemeProvider
@@ -36,7 +44,7 @@ export default function RootLayout({ children }) {
             <Toaster richColors></Toaster>
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made by Siddharth Rajpurohit </p>
+                <p>Made by Siddharth Rajpurohit 🤖 </p>
               </div>
             </footer>
           </ThemeProvider>
