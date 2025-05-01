@@ -54,7 +54,14 @@ export async function getIndustryInsights() {
     const insights = await generateAIInsights(user.industry);
 
     const industryInsight = await db.industryInsight.upsert({
-      data: {
+      where: {
+        industry: user.industry || "unknown",
+      },
+      update: {
+        ...insights,
+        nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+      create: {
         industry: user.industry || "unknown",
         ...insights,
         nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
